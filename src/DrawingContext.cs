@@ -11,13 +11,16 @@ namespace netcoregame
 
         public DrawingContext(GameWindow gameWindow)
         {
+            _gameWindow = gameWindow;
             CanvasWidth = gameWindow.Bounds.Width;
             CanvasHeight = gameWindow.Bounds.Height;
         }
 
         public void Dispose()
         {
-
+            _gameWindow.SwapBuffers();
         }
+
+        private GameWindow _gameWindow;
     }
 }

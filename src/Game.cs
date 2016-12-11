@@ -40,7 +40,7 @@ namespace netcoregame
         private void Draw()
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
-            GL.ClearColor(Color.CornflowerBlue);
+            GL.ClearColor(Color.Black);
             GL.Viewport(0, 0, Bounds.Width, Bounds.Height);
             
             GL.Begin(PrimitiveType.Triangles);
@@ -59,8 +59,6 @@ namespace netcoregame
             {
                 _texture.Draw(context, new System.Drawing.Rectangle(0, 0, 16, 16), new System.Drawing.Rectangle(0, 0, 16, 16));
             }
-
-            this.SwapBuffers();
         }
 
         private Texture _texture;
