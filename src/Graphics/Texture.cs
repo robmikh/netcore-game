@@ -2,7 +2,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using System;
 
-namespace netcoregame
+namespace Robmikh.Graphics
 {
     class Texture
     {

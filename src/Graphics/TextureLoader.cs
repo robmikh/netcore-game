@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 
-namespace netcoregame
+namespace Robmikh.Graphics
 {
     static class TextureLoader
     {

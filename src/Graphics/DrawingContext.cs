@@ -2,7 +2,7 @@ using System;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 
-namespace netcoregame
+namespace Robmikh.Graphics
 {
     class DrawingContext : IDisposable
     {
