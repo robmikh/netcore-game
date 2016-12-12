@@ -42,7 +42,7 @@ namespace netcoregame
         {
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.ClearColor(Color.Black);
-            GL.Viewport(0, 0, Bounds.Width, Bounds.Height);
+            GL.Viewport(0, 0, ClientSize.Width, ClientSize.Height);
             
             GL.Begin(PrimitiveType.Triangles);
 
@@ -56,10 +56,17 @@ namespace netcoregame
             GL.End();
             GL.Color3(Color.Transparent);
             
-            using (var context = new DrawingContext(this))
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            using (var context = new DrawingContext(ClientSize.Width, ClientSize.Height))
             {
-                _texture.Draw(context, new System.Drawing.Rectangle(0, 0, 16, 16), new System.Drawing.Rectangle(0, 0, 16, 16));
+                context.FillRectangle(new System.Drawing.Rectangle(0, ClientSize.Height - 64, 64, 64), new TextureBrush(_texture, new System.Drawing.Rectangle(368, 176, 16, 16)));
+
+                context.FillRectangle(new System.Drawing.Rectangle(0, 0, 384 * 2, 192 * 2), new TextureBrush(_texture));
+
+                context.FillRectangle(new System.Drawing.Rectangle(100, 100, 30, 30), new SolidColorBrush(System.Drawing.Color.Red));
             }
+
+            this.SwapBuffers();
         }
 
         private Texture _texture;
