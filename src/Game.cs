@@ -40,6 +40,7 @@ namespace netcoregame
 
         private void Draw()
         {
+            GL.Enable(EnableCap.Blend);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.ClearColor(Color.Black);
             GL.Viewport(0, 0, ClientSize.Width, ClientSize.Height);
