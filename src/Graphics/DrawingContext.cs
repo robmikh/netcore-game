@@ -18,7 +18,12 @@ namespace Robmikh.Graphics
             CanvasHeight = height;
         }
 
-        public void FillRectangle(System.Drawing.Rectangle rectangle, IBrush brush)
+        public SpriteBatch CreateSpriteBatch(Texture texture)
+        {
+            return new SpriteBatch(this, texture);
+        }
+
+        public void FillRectangle(System.Drawing.RectangleF rectangle, IBrush brush)
         {
             var brushInternal = brush as IBrushInternal;
 
@@ -56,7 +61,50 @@ namespace Robmikh.Graphics
             }
         }
 
-        internal IEnumerable<Vector2> BuildVertices(System.Drawing.Rectangle rectangle)
+        public void DrawTexture(Texture texture, System.Drawing.RectangleF sourceRect, System.Drawing.RectangleF destRect)
+        {
+            var vertices = BuildVertices(destRect);
+            var texCoords = BuildTexCoordinates(texture.Width, texture.Height, sourceRect);
+
+            using (var session = new DrawingSession(this, PrimitiveType.Quads, texture))
+            {
+                DrawTexture(vertices, texCoords);
+            }
+        }
+
+        internal IEnumerable<Vector2> BuildTexCoordinates(int textureWidth, int textureHeight, System.Drawing.RectangleF sourceRect)
+        {
+            float left = (float)sourceRect.Left;
+            float top = (float)textureHeight - sourceRect.Top;
+            float right = (float)sourceRect.Right;
+            float bottom = (float)textureHeight - sourceRect.Bottom;
+
+            left /= (float)textureWidth;
+            top /= (float)textureHeight;
+            right /= (float)textureWidth;
+            bottom /= (float)textureHeight;
+
+            var texCoords = new List<OpenTK.Vector2>();
+            texCoords.Add(new Vector2(left, 1 - bottom));
+            texCoords.Add(new Vector2(left, 1 - top));
+            texCoords.Add(new Vector2(right, 1 - top));
+            texCoords.Add(new Vector2(right, 1 - bottom));
+
+            return texCoords;
+        }
+
+        internal void DrawTexture(IEnumerable<Vector2> vertices, IEnumerable<Vector2> texCoords)
+        {
+            for (int i = 0; i < vertices.Count<Vector2>(); i++)
+            {
+                var vertex = vertices.ElementAt(i);
+                var textCoord = texCoords.ElementAt(i);
+                GL.TexCoord2(textCoord.X, textCoord.Y);
+                GL.Vertex2(vertex.X, vertex.Y);
+            }
+        }
+
+        internal IEnumerable<Vector2> BuildVertices(System.Drawing.RectangleF rectangle)
         {
             var vertices = new List<Vector2>();
 

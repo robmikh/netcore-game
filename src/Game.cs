@@ -2,6 +2,7 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using Robmikh.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace netcoregame
 {
@@ -17,6 +18,20 @@ namespace netcoregame
             base.OnLoad(e);
 
             _texture = TextureLoader.LoadTexture("sheet.png");
+            _tiles = new int[, ]
+            {
+                {  0,   1,   2,   3,   4,   1,   2,   3,   4,   5},
+                { 24, 100, 100, 100, 100, 100, 100, 100, 100,  29},
+                { 48, 100, 100, 100, 100, 100, 100, 100, 100,  53},
+                { 72, 100, 100, 100, 100, 100, 100, 100, 100,  77},
+                { 96, 100, 100, 100, 100, 100, 100, 100, 100, 101},
+                { 24, 100, 100, 100, 100, 100, 100, 100, 100,  29},
+                { 48, 100, 100, 100, 100, 100, 100, 100, 100,  53},
+                { 72, 100, 100, 100, 100, 100, 100, 100, 100,  77},
+                { 96, 100, 100, 100, 100, 100, 100, 100, 100, 101},
+                {120, 121, 122, 123, 124, 121, 122, 123, 124, 125}
+            };
+            _spriteSheet = new SpriteSheet(_texture, new OpenTK.Vector2(16, 16));
         }
         
         protected override void OnUpdateFrame(FrameEventArgs e)
@@ -45,31 +60,34 @@ namespace netcoregame
             GL.ClearColor(Color.Black);
             GL.Viewport(0, 0, ClientSize.Width, ClientSize.Height);
             
-            GL.Begin(PrimitiveType.Triangles);
-
-            GL.Color3(Color.Red);
-            GL.Vertex2(0, 0.5f);
-            GL.Color3(Color.Blue);
-            GL.Vertex2(-0.5f, -0.5f);
-            GL.Color3(Color.Green);
-            GL.Vertex2(0.5f, -0.5f);
-
-            GL.End();
-            GL.Color3(Color.Transparent);
-            
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
             using (var context = new DrawingContext(ClientSize.Width, ClientSize.Height))
             {
-                context.FillRectangle(new System.Drawing.Rectangle(0, ClientSize.Height - 64, 64, 64), new TextureBrush(_texture, new System.Drawing.Rectangle(368, 176, 16, 16)));
+                //context.FillRectangle(new System.Drawing.RectangleF(0, ClientSize.Height - 64, 64, 64), new TextureBrush(_texture, new System.Drawing.RectangleF(16, 16, 16, 16)));
 
-                context.FillRectangle(new System.Drawing.Rectangle(0, 0, 384 * 2, 192 * 2), new TextureBrush(_texture));
+                //context.FillRectangle(new System.Drawing.RectangleF(0, 0, 384 * 2, 192 * 2), new TextureBrush(_texture));
 
-                context.FillRectangle(new System.Drawing.Rectangle(100, 100, 30, 30), new SolidColorBrush(System.Drawing.Color.Red));
+                context.FillRectangle(new System.Drawing.RectangleF(100, 100, 30, 30), new SolidColorBrush(System.Drawing.Color.Red));
+
+                //context.DrawTexture(_texture, new System.Drawing.RectangleF(16, 16, 16, 16),  new System.Drawing.RectangleF(ClientSize.Width - 64, ClientSize.Height - 64, 64, 64));
+
+                using (var spriteBatch = context.CreateSpriteBatch(_texture))
+                {
+                    for (int x = 0; x < _tiles.GetLength(1); x++)
+                    {
+                        for (int y = 0; y < _tiles.GetLength(0); y++)
+                        {
+                            _spriteSheet.Draw(spriteBatch, _tiles[y, x], new Vector2(x * _spriteSheet.SpriteSize.X, y * _spriteSheet.SpriteSize.Y));
+                        }
+                    }
+                }
             }
 
             this.SwapBuffers();
         }
 
         private Texture _texture;
+        private SpriteSheet _spriteSheet;
+        private int[,] _tiles;
     }
 }

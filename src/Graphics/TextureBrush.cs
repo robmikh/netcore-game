@@ -9,7 +9,7 @@ namespace Robmikh.Graphics
     class TextureBrush : IBrushInternal
     {
         public Texture Texture { get; }
-        public System.Drawing.Rectangle SourceRect { get; }
+        public System.Drawing.RectangleF SourceRect { get; }
 
         public TextureBrush(Texture texture)
         {
@@ -17,7 +17,7 @@ namespace Robmikh.Graphics
             SourceRect = new System.Drawing.Rectangle(0, 0, texture.Width, texture.Height);
         }
 
-        public TextureBrush(Texture texture, System.Drawing.Rectangle sourceRect)
+        public TextureBrush(Texture texture, System.Drawing.RectangleF sourceRect)
         {
             Texture = texture;
             SourceRect = sourceRect;
@@ -27,10 +27,10 @@ namespace Robmikh.Graphics
         {
             var list = new List<VertexInfo>();
 
-            float left = SourceRect.Left;
-            float top = Texture.Height - SourceRect.Top;
-            float right = SourceRect.Right;
-            float bottom = Texture.Height - SourceRect.Bottom;
+            float left = (float)SourceRect.Left;
+            float top = (float)Texture.Height - SourceRect.Top;
+            float right = (float)SourceRect.Right;
+            float bottom = (float)Texture.Height - SourceRect.Bottom;
 
             float sampleWidth = SourceRect.Width;
             float sampleHeight = SourceRect.Height;

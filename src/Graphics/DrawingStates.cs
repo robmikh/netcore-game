@@ -13,6 +13,7 @@ namespace Robmikh.Graphics
         public ColorState(System.Drawing.Color targetColor, System.Drawing.Color previousColor)
         {
             TargetColor = targetColor;
+            PreviousColor = previousColor;
         }
 
         private OpenTK.Color ConvertColor(System.Drawing.Color color)
