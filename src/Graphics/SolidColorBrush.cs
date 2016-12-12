@@ -15,12 +15,9 @@ namespace Robmikh.Graphics
             Color = color;
         }
 
-        public IEnumerable<PrepVertex> PrepVertexState(IEnumerable<OpenTK.Vector2> verticies)
+        public IEnumerable<VertexInfo> GetVertexInfo(IEnumerable<OpenTK.Vector2> verticies)
         {
-            return new PrepVertex[] { (c, s) =>
-            {
-                s.PushColor(Color);
-            } };
+            return new VertexInfo[] { new VertexInfo(Color, OpenTK.Vector2.Zero) };
         }
     }
 }

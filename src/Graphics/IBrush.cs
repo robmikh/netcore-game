@@ -14,6 +14,6 @@ namespace Robmikh.Graphics
 
     internal interface IBrushInternal : IBrush
     {
-        IEnumerable<PrepVertex> PrepVertexState(IEnumerable<Vector2> verticies);
+        IEnumerable<VertexInfo> GetVertexInfo(IEnumerable<Vector2> verticies);
     }
 }

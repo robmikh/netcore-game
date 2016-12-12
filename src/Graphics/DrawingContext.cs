@@ -28,7 +28,7 @@ namespace Robmikh.Graphics
             }
 
             var vertices = BuildVertices(rectangle);
-            var vertexPrep = brushInternal.PrepVertexState(vertices);
+            var vertexInfo = brushInternal.GetVertexInfo(vertices);
 
             Texture texture = null;
             if (brush is TextureBrush)
@@ -38,13 +38,18 @@ namespace Robmikh.Graphics
 
             using (var session = new DrawingSession(this, PrimitiveType.Quads, texture))
             {
+                if (brush is SolidColorBrush)
+                {
+                    session.PushColor(vertexInfo.First().Color);
+                }
+
                 for (int i = 0; i < vertices.Count<Vector2>(); i++)
                 {
                     var vertex = vertices.ElementAt(i);
-                    if (i < vertexPrep.Count())
+                    if (brush is TextureBrush)
                     {
-                        var prep = vertexPrep.ElementAt(i);
-                        prep(this, session);
+                        var info = vertexInfo.ElementAt(i);
+                        GL.TexCoord2(info.TexCoordinate.X, info.TexCoordinate.Y);
                     }
                     GL.Vertex2(vertex.X, vertex.Y);
                 }
@@ -61,24 +66,6 @@ namespace Robmikh.Graphics
             float top = CanvasHeight - rectangle.Top;
             float right = rectangle.Right;
             float bottom = CanvasHeight - rectangle.Bottom;
-
-/*
-            // Vertices:
-            //  0 <-- 3
-            //  |     ^
-            //  |     |
-            //  V     |
-            //  1 --> 2
-
-            // 0
-            vertices.Add(new Vector2(((left / CanvasWidth) * 2) - 1, ((top / CanvasHeight) * 2) - 1));
-            // 1       
-            vertices.Add(new Vector2(((left / CanvasWidth) * 2) - 1, ((bottom / CanvasHeight) * 2) - 1));
-            // 2          
-            vertices.Add(new Vector2(((right / CanvasWidth) * 2) - 1, ((bottom / CanvasHeight) * 2) - 1));
-            // 3
-            vertices.Add(new Vector2(((right / CanvasWidth) * 2) - 1, ((top / CanvasHeight) * 2) - 1)); 
-            */       
 
             // Vertices:
             //  1 --> 2

@@ -23,9 +23,9 @@ namespace Robmikh.Graphics
             SourceRect = sourceRect;
         }
 
-        public IEnumerable<PrepVertex> PrepVertexState(IEnumerable<Vector2> verticies)
+        public IEnumerable<VertexInfo> GetVertexInfo(IEnumerable<Vector2> verticies)
         {
-            var list = new List<PrepVertex>();
+            var list = new List<VertexInfo>();
 
             float left = SourceRect.Left;
             float top = Texture.Height - SourceRect.Top;
@@ -77,33 +77,8 @@ namespace Robmikh.Graphics
 
                 y = 1 - y;
 
-                list.Add((s, c) =>
-                {
-                    GL.TexCoord2(x, y);
-                });
+                list.Add(new VertexInfo(System.Drawing.Color.Transparent, new Vector2(x, y)));
             }
-
-            /*
-            list.Add((s, c) =>
-            {
-                GL.TexCoord2((float)SourceRect.Left / Texture.Width, (float)SourceRect.Bottom / Texture.Height);
-            });
-
-            list.Add((s, c) =>
-            {
-                GL.TexCoord2((float)SourceRect.Right / Texture.Width, (float)SourceRect.Bottom / Texture.Height);
-            });
-
-            list.Add((s, c) =>
-            {
-                GL.TexCoord2((float)SourceRect.Right / Texture.Width, (float)SourceRect.Top / Texture.Height);
-            });
-
-            list.Add((s, c) =>
-            {
-                GL.TexCoord2((float)SourceRect.Left / Texture.Width, (float)SourceRect.Top / Texture.Height);
-            });
-            */
 
             return list;
         }
